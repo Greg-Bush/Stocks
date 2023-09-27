@@ -10,10 +10,15 @@
 
 import React from 'react';
 import 'react-native-gesture-handler';
+import {ToastProvider} from 'react-native-toast-notifications';
 import Navigation from './src/Navigation';
 
 const App = () => {
-  return <Navigation />;
+  return (
+    <ToastProvider>
+      <Navigation />
+    </ToastProvider>
+  );
 };
 
 export default App;
