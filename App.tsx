@@ -11,12 +11,15 @@
 import React from 'react';
 import 'react-native-gesture-handler';
 import {ToastProvider} from 'react-native-toast-notifications';
+import DataProvider from './src/DataProvider';
 import Navigation from './src/Navigation';
 
 const App = () => {
   return (
     <ToastProvider>
-      <Navigation />
+      <DataProvider>
+        <Navigation />
+      </DataProvider>
     </ToastProvider>
   );
 };
