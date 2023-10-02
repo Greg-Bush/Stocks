@@ -1,15 +1,10 @@
-import React, {useCallback} from 'react';
-import {
-  FlatList,
-  ListRenderItemInfo,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {AbstractItem} from './AbstractItem';
+import React from 'react';
 import {useAsync} from 'react-async-hook';
-import getColumnSizes from './getColumnSizes';
+import {FlatList, ScrollView} from 'react-native';
 import Spinner from '../Spinner';
+import {AbstractItem} from './AbstractItem';
+import Row from './Row';
+import getColumnSizes from './getColumnSizes';
 
 export default function Table<DataItem extends AbstractItem>(props: {
   data: DataItem[];
@@ -18,43 +13,22 @@ export default function Table<DataItem extends AbstractItem>(props: {
 }) {
   const {data, columns, keyExtractor} = props;
 
-  const asyncColumnSizes = useAsync(getColumnSizes, [data, columns]);
+  const {result: widths, loading} = useAsync(getColumnSizes, [data, columns]);
 
-  const renderRow = useCallback(
-    (info: ListRenderItemInfo<DataItem>) => {
-      const widths = asyncColumnSizes.result;
-      if (!widths) {
-        return null;
-      }
-      return (
-        <View style={styles.row}>
-          {columns.map((key, index) => (
-            <Text style={{width: widths[index]}} key={key}>
-              {info.item[key]}
-            </Text>
-          ))}
-        </View>
-      );
-    },
-    [asyncColumnSizes.result, columns],
-  );
-
-  if (asyncColumnSizes.loading) {
+  if (loading) {
     return <Spinner />;
   }
 
   return (
-    <FlatList
-      ListHeaderComponent={() => <></>}
-      data={data}
-      renderItem={renderRow}
-      keyExtractor={keyExtractor}
-    />
+    <ScrollView horizontal>
+      <FlatList
+        ListHeaderComponent={() => <></>}
+        data={data}
+        renderItem={({item}) => (
+          <Row item={item} widths={widths} columns={columns} />
+        )}
+        keyExtractor={keyExtractor}
+      />
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-  },
-});
