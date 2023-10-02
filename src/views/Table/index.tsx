@@ -21,8 +21,9 @@ export default function Table<DataItem extends AbstractItem>(props: {
   }
 
   return (
-    <ScrollView horizontal>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => <Head widths={widths} items={columns} />}
         data={data}
         renderItem={({item}) => (
