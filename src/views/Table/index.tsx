@@ -6,6 +6,7 @@ import {AbstractItem} from './AbstractItem';
 import Row from './Row';
 import getColumnSizes from './getColumnSizes';
 import Head from './Head';
+import useError from '../../hooks/useError';
 
 export default function Table<DataItem extends AbstractItem>(props: {
   data: DataItem[];
@@ -14,7 +15,12 @@ export default function Table<DataItem extends AbstractItem>(props: {
 }) {
   const {data, columns, keyExtractor} = props;
 
-  const {result: widths, loading} = useAsync(getColumnSizes, [data, columns]);
+  const {
+    result: widths,
+    loading,
+    error,
+  } = useAsync(getColumnSizes, [data, columns]);
+  useError(error);
 
   if (loading || !widths) {
     return <Spinner />;
