@@ -1,19 +1,17 @@
 import React, {memo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {AbstractItem} from './AbstractItem';
+import {styles} from './styles';
 
 function Row({
   widths,
   columns,
   item,
 }: {
-  widths: number[] | undefined;
+  widths: number[];
   columns: string[];
   item: AbstractItem;
 }) {
-  if (!widths) {
-    return null;
-  }
   return (
     <View style={styles.row}>
       {columns.map((key, index) => (
@@ -26,9 +24,3 @@ function Row({
 }
 
 export default memo(Row);
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-  },
-});

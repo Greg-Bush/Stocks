@@ -5,6 +5,7 @@ import Spinner from '../Spinner';
 import {AbstractItem} from './AbstractItem';
 import Row from './Row';
 import getColumnSizes from './getColumnSizes';
+import Head from './Head';
 
 export default function Table<DataItem extends AbstractItem>(props: {
   data: DataItem[];
@@ -15,14 +16,14 @@ export default function Table<DataItem extends AbstractItem>(props: {
 
   const {result: widths, loading} = useAsync(getColumnSizes, [data, columns]);
 
-  if (loading) {
+  if (loading || !widths) {
     return <Spinner />;
   }
 
   return (
     <ScrollView horizontal>
       <FlatList
-        ListHeaderComponent={() => <></>}
+        ListHeaderComponent={() => <Head widths={widths} items={columns} />}
         data={data}
         renderItem={({item}) => (
           <Row item={item} widths={widths} columns={columns} />
