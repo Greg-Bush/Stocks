@@ -1,30 +1,18 @@
-import React from 'react';
-import {useAsync} from 'react-async-hook';
+import React, {useMemo} from 'react';
 import {FlatList, ScrollView} from 'react-native';
-import Spinner from '../Spinner';
 import {AbstractItem} from './AbstractItem';
+import Head from './Head';
 import Row from './Row';
 import getColumnSizes from './getColumnSizes';
-import Head from './Head';
-import useError from '../../hooks/useError';
 
-export default function Table<DataItem extends AbstractItem>(props: {
+function Table<DataItem extends AbstractItem>(props: {
   data: DataItem[];
   columns: string[];
   keyExtractor: (item: DataItem) => string;
 }) {
   const {data, columns, keyExtractor} = props;
 
-  const {
-    result: widths,
-    loading,
-    error,
-  } = useAsync(getColumnSizes, [data, columns]);
-  useError(error);
-
-  if (loading || !widths) {
-    return <Spinner />;
-  }
+  const widths = useMemo(() => getColumnSizes(data, columns), [data, columns]);
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -40,3 +28,5 @@ export default function Table<DataItem extends AbstractItem>(props: {
     </ScrollView>
   );
 }
+
+export default Table;

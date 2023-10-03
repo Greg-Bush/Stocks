@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {AbstractItem} from './AbstractItem';
+import Cell from './Cell';
 import {styles} from './styles';
 
 function Row({
@@ -15,9 +16,7 @@ function Row({
   return (
     <View style={styles.row}>
       {columns.map((key, index) => (
-        <Text style={{width: widths[index]}} key={key}>
-          {item[key]}
-        </Text>
+        <Cell width={widths[index]} key={key} value={item[key].toString()} />
       ))}
     </View>
   );

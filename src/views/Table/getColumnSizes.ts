@@ -1,6 +1,6 @@
 import {AbstractItem} from './AbstractItem';
 
-export default async function getColumnSizes(
+export default function getColumnSizes(
   rows: AbstractItem[],
   columnKeys: string[],
 ) {
@@ -21,11 +21,9 @@ export default async function getColumnSizes(
   }
 
   const longestRow = getLongestValuesForEachColumn();
-  return await Promise.all(
-    columnKeys.map(async columnKey => {
-      // TODO: npm i react-native-text-size
-      const size = (longestRow[columnKey] as string).length;
-      return size * 7;
-    }),
-  );
+  return columnKeys.map(columnKey => {
+    // TODO: npm i react-native-text-size
+    const size = (longestRow[columnKey] as string).length;
+    return size * 7;
+  });
 }

@@ -23,8 +23,11 @@ type Market = {
   markPrice: string;
 };
 
-export default function useMarketsTicker24hQuery() {
+export default function useMarketsTicker24hQuery(
+  refetchInterval: number | false,
+) {
   return useQuery<Market[]>({
     queryFn: () => fetch(QUERY_ADDRESS).then(res => res.json()),
+    refetchInterval,
   });
 }
