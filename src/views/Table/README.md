@@ -1,0 +1,1 @@
+The index file here contains the main sense of this directory - the Table view.
